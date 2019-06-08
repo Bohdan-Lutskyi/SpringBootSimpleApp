@@ -2,12 +2,20 @@
 <body>
 <div>
     <form method="post">
-        <input type="text" name="text" placeholder="Enter Message"/>
-        <input type="text" name="text" placeholder="Tag"/>
+        <label>
+            <input type="text" name="text" placeholder="Enter Message"/>
+            <input type="text" name="tag" placeholder="Tag"/>
+        </label>
         <button type="submit">Add</button>
     </form>
 </div>
 <div>Messages list</div>
+<form method="post" action="filter">
+    <label>
+        <input type="text" name="filter">
+    </label>
+    <button type="submit">Find field</button>
+</form>
 {{#messages}}
     <div>
         <b>{{id}}</b>
