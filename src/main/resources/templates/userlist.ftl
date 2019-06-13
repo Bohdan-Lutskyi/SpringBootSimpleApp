@@ -22,5 +22,5 @@
 
         </tbody>
     </table>
-    <a href="/main">Main page</a>
+<#--    <a href="/main">Main page</a>-->
 </@c.page>
