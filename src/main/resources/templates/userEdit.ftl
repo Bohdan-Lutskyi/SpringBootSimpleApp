@@ -15,6 +15,6 @@
         <button type="submit">Save</button>
     </form>
 <#--    <a href="/main">Main page</a>-->
-    <a href="/user">List of users</a>
+<#--    <a href="/user">List of users</a>-->
 
 </@c.page>
