@@ -13,6 +13,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String email;
     private String username;
     private String password;
     private boolean active;
@@ -23,7 +24,6 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     public boolean isAdmin(){
-
         return roles.contains(Role.ADMIN);
     }
 
@@ -90,5 +90,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
