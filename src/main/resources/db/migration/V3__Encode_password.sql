@@ -1,0 +1,1 @@
+# update user set password = encode(password, concat(8))
