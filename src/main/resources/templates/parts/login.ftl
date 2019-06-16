@@ -1,4 +1,5 @@
 <#macro login path isRegisterForm>
+
     <form action="${path}" method="post">
         <div class="form-group">
             <label>User Name</label>
@@ -20,6 +21,7 @@
                 </div>
             </#if>
         </div>
+
         <#if isRegisterForm>
             <div>
                 <label> Password</label>
@@ -42,14 +44,25 @@
                     </div
                 </#if>
             </div>
+            <div>
+                <div class="g-recaptcha mt-3" data-sitekey="6Lc4F6kUAAAAAHOCGIf8L2DwagSG6d6P2MNJ9RS8"></div>
+                <#if captchaError??>
+                    <div class="alert alert-danger" role="alert">
+                        ${captchaError}
+                    </div>
+                </#if>
+            </div>
         </#if>
+
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <div class="mb-2"></div>
+
         <#if isRegisterForm>
             <button type="submit" class="btn btn-primary">Create user</button>
         <#else>
             <button type="submit" class="btn btn-primary">Sign in</button>
         </#if>
+
         <div class="mb-2"></div>
         <#if !isRegisterForm><a href="/registration">Add new user</a></#if>
     </form>
