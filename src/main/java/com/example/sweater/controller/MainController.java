@@ -27,18 +27,14 @@ import java.util.stream.Collectors;
 @Controller
 public class MainController {
 
-    private MessageRepository messageRepository;
-
     @Autowired
-    public void setMessageRepository(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
-    }
+    private MessageRepository messageRepository;
 
     @Value("${upload.path}")
     private String uploadPath;
 
     @GetMapping("/")
-    public String greeting(Map<String, Object> model) {
+    public String greeting() {
         return "greeting";
     }
 
