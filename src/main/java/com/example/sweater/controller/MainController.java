@@ -1,10 +1,10 @@
 package com.example.sweater.controller;
 
+import com.example.sweater.utils.SaveFile;
 import com.example.sweater.domain.Message;
 import com.example.sweater.domain.User;
 import com.example.sweater.repos.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,19 +15,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
+
 @Controller
 public class MainController {
 
-    @Autowired
     private MessageRepository messageRepository;
 
-    @Value("${upload.path}")
-    private String uploadPath;
+    @Autowired
+    public void setMessageRepository(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
+    }
 
     @GetMapping("/")
     public String greeting() {
@@ -58,12 +59,13 @@ public class MainController {
     ) throws IOException {
         message.setAuthor(user);
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtil.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
         } else {
-            saveFile(message, file);
+            SaveFile saveFile = new SaveFile();
+            saveFile.saveFile(message, file);
 
             model.addAttribute("message", null);
             messageRepository.save(message);
