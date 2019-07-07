@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <div class="custom-file mb-3">
-                    <input type="file" name="file" id="customFile">
+                    <input type="file" name="file" id="customFile" />
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
