@@ -3,6 +3,7 @@ package com.example.sweater.controller;
 import com.example.sweater.domain.Message;
 import com.example.sweater.domain.User;
 import com.example.sweater.repos.MessageRepository;
+import com.example.sweater.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,7 @@ import java.util.UUID;
 
 
 @Controller
-public class MainController {
+public class MessageController {
 
     private MessageRepository messageRepository;
 
@@ -34,6 +35,9 @@ public class MainController {
     public void setMessageRepository(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
     }
+
+    @Autowired
+    private MessageService messageService;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -50,7 +54,7 @@ public class MainController {
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
 
     ) {
-        Page<Message> page;
+        Page<Message> page = messageService.messageList(pageable, filter);
 
         if (filter != null && !filter.isEmpty()) {
             page = messageRepository.findByTag(filter, pageable);
@@ -66,7 +70,7 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String add(
+    public String addMessage(
             @AuthenticationPrincipal User user,
             @Valid Message message,
             BindingResult bindingResult,
@@ -93,7 +97,7 @@ public class MainController {
     }
 
     private void saveFile(@Valid Message message, @RequestParam("file") MultipartFile file) throws IOException {
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
+         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdir();
 
