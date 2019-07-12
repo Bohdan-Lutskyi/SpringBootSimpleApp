@@ -1,6 +1,6 @@
 package com.example.sweater;
 
-import com.example.sweater.controller.MainController;
+import com.example.sweater.controller.MessageController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource("/application-test.properties")public class LoginTest {
+@TestPropertySource("/application-test.properties")
+public class LoginTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private MainController controller;
+    private MessageController controller;
 
     @Test
     public void contextLoads() throws Exception {
