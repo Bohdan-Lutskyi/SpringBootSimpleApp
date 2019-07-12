@@ -2,13 +2,12 @@ package com.example.sweater.service;
 
 import com.example.sweater.domain.Role;
 import com.example.sweater.domain.User;
-import com.example.sweater.repos.UserRepo;
+import com.example.sweater.repos.UserRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,9 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyString;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTest {
@@ -28,7 +24,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @MockBean
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
     @MockBean
     private MailSender mailSender;
@@ -48,7 +44,7 @@ public class UserServiceTest {
         Assert.assertNotNull(user.getActivationCode());
         Assert.assertTrue(CoreMatchers.is(user.getRoles()).matches(Collections.singleton(Role.USER)));
 
-        Mockito.verify(userRepo, Mockito.times(1)).save(user);
+        Mockito.verify(userRepository, Mockito.times(1)).save(user);
         Mockito.verify(mailSender, Mockito.times(1))
                 .send(
                         ArgumentMatchers.eq(user.getEmail()),
@@ -64,14 +60,14 @@ public class UserServiceTest {
         user.setUsername("some");
 
         Mockito.doReturn(new User())
-                .when(userRepo)
+                .when(userRepository)
                 .findByUsername("some");
 
         boolean isUserCreated = userService.addUser(user);
 
         Assert.assertFalse(isUserCreated);
 
-        Mockito.verify(userRepo, Mockito.times(0)).save(ArgumentMatchers.any(User.class));
+        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(User.class));
         Mockito.verify(mailSender, Mockito.times(0))
                 .send(
                         ArgumentMatchers.eq(user.getEmail()),
@@ -88,7 +84,7 @@ public class UserServiceTest {
         user.setActivationCode("bingo!");
 
         Mockito.doReturn(user)
-                .when(userRepo)
+                .when(userRepository)
                 .findByActivationCode("activate");
 
         boolean isUserActivated = userService.activateUser("activate");
@@ -96,7 +92,7 @@ public class UserServiceTest {
         Assert.assertTrue(isUserActivated);
         Assert.assertNull(user.getActivationCode());
 
-        Mockito.verify(userRepo, Mockito.times(1)).save(user);
+        Mockito.verify(userRepository, Mockito.times(1)).save(user);
     }
 
     @Test
@@ -105,7 +101,7 @@ public class UserServiceTest {
 
         Assert.assertFalse(isUserActivated);
 
-        Mockito.verify(userRepo, Mockito.times(0)).save(ArgumentMatchers.any(User.class));
+        Mockito.verify(userRepository, Mockito.times(0)).save(ArgumentMatchers.any(User.class));
 
 
 
